@@ -49,9 +49,7 @@ client.on('interactionCreate', (interaction) => {
 });
 
 async function start() {
-	// catches commands/file.ts
 	await importx(__dirname + '/commands/*.{js,ts}');
-	// catches commands/subfolder/file.ts
 	await importx(__dirname + '/commands/*/*.{js,ts}');
 	await importx(__dirname + '/events/*.{js,ts}');
 	await client.login(process.env.TOKEN!!);

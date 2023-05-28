@@ -12,9 +12,47 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Member {
-  // User ID
-  id String @id
-  level Int @default(1)
-  exp Int @default(0)
+model Server {
+    // Guild ID
+    id         String       @id
+    joinedAt   DateTime     @default(now())
+    UserLevel  UserLevel[]
+    Channels   Channels[]
+    LevelRoles LevelRoles[]
+}
+
+model Channels {
+    serverId String @id
+
+    level String?
+
+    Server Server @relation(fields: [serverId], references: [id])
+
+    @@index([serverId])
+}
+
+model UserLevel {
+    userId   String @id
+    serverId String
+
+    level Int @default(1)
+    exp   Int @default(0)
+
+    Server Server @relation(fields: [serverId], references: [id])
+
+    @@index([serverId])
+}
+
+model LevelRoles {
+    id        Int    @id @default(autoincrement())
+    // Role ID to give
+    roleId    String
+    // Needed level to give it at
+    neededLvl Int
+    // Server this level role belongs to
+    serverId  String
+
+    Server Server @relation(fields: [serverId], references: [id])
+
+    @@index([serverId])
 }
