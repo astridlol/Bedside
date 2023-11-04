@@ -1,15 +1,11 @@
-import {
-	ApplicationCommandOptionType,
-	CommandInteraction,
-	EmbedBuilder,
-	GuildMember
-} from 'discord.js';
-import { Discord, Slash, SlashOption } from 'discordx';
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js';
+import { Discord, Guard, Slash, SlashOption } from 'discordx';
 import { prisma } from '..';
-import Colors from '../constants/Colors';
+import { RequireGuildMember } from '../guards/RequireGuildMember';
 
 @Discord()
 class Reputation {
+	@Guard(RequireGuildMember)
 	@Slash({ description: 'View your prison reputation' })
 	async rank(
 		@SlashOption({
@@ -18,16 +14,23 @@ class Reputation {
 			required: false,
 			type: ApplicationCommandOptionType.User
 		})
-		user: GuildMember,
+		member: GuildMember,
 		interaction: CommandInteraction
 	) {
 		await interaction.deferReply({
 			ephemeral: true
 		});
 
-		const userId = user ? user.id : interaction.user.id;
+		if (member && member.user.bot) {
+			interaction.editReply({
+				content: "Bots can't have levels sadly"
+			});
+			return;
+		}
 
-		const rank = await prisma.userLevel.findFirst({
+		const userId = member ? member.id : interaction.user.id;
+
+		let rank = await prisma.userLevel.findFirst({
 			where: {
 				userId,
 				serverId: interaction.guildId
@@ -35,24 +38,22 @@ class Reputation {
 		});
 
 		if (!rank) {
-			const embed = new EmbedBuilder()
-				.setColor(Colors.red)
-				.setTitle('Uh oh!')
-				.setDescription(
-					user
-						? 'This person is either not in this server, or has never talked.'
-						: 'Could not fetch rank information for you.'
-				);
-
-			interaction.editReply({
-				embeds: [embed]
+			await prisma.userLevel.create({
+				data: {
+					userId,
+					serverId: interaction.guildId
+				}
 			});
-
-			return;
+			rank = await prisma.userLevel.findFirst({
+				where: {
+					userId,
+					serverId: interaction.guildId
+				}
+			});
 		}
 
 		let content =
-			(user ? `${user.user.username} is level` : `You are level`) +
+			(member ? `${member.user.username} is level` : `You are level`) +
 			` ${rank.level} (${rank.exp} exp / ${rank.level * 50} exp)`;
 
 		interaction.editReply({

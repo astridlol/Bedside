@@ -16,16 +16,17 @@
 	"license": "ISC",
 	"devDependencies": {
 		"prettier": "^2.8.8",
-		"prisma": "^4.10.1"
+		"prisma": "^5.5.2"
 	},
 	"dependencies": {
 		"@discordx/importer": "^1.1.10",
-		"@prisma/client": "^4.10.1",
+		"@prisma/client": "^5.5.2",
 		"@types/node": "^18.6.1",
 		"axios": "^1.3.3",
 		"discord.js": "^14.2.0",
 		"discordx": "^11.1.9",
 		"dotenv": "^16.0.1",
+		"is-word": "^1.0.4",
 		"node-cache": "^5.1.2",
 		"reflect-metadata": "^0.1.13",
 		"ts-node": "^10.9.1",

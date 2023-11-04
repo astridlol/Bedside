@@ -17,18 +17,7 @@ model Server {
     id         String       @id
     joinedAt   DateTime     @default(now())
     UserLevel  UserLevel[]
-    Channels   Channels[]
     LevelRoles LevelRoles[]
-}
-
-model Channels {
-    serverId String @id
-
-    level String?
-
-    Server Server @relation(fields: [serverId], references: [id])
-
-    @@index([serverId])
 }
 
 model UserLevel {
