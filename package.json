@@ -2,18 +2,18 @@
 	"name": "bedside",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/index.js",
+	"main": "dist/src/index.js",
 	"type": "commonjs",
 	"scripts": {
 		"start": "node .",
 		"prestart": "tsc --p tsconfig.json",
 		"format": "prettier --write ./",
-		"dev": "npm run format && ts-node src/index.ts",
+		"dev": "yarn format && ts-node src/index.ts",
 		"migrate": "npx prisma migrate dev --name init"
 	},
 	"keywords": [],
 	"author": "Astrid",
-	"license": "ISC",
+	"license": "Apache-2.0",
 	"devDependencies": {
 		"prettier": "^2.8.8",
 		"prisma": "^5.5.2"
