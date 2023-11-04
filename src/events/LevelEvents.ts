@@ -13,7 +13,7 @@ interface LevelResponse {
 }
 
 @Discord()
-class ReputationEvents {
+class LevelEvents {
 	async checkLevel(userId: string): Promise<LevelResponse> {
 		const userLevel = await prisma.userLevel.findFirst({ where: { userId } });
 
@@ -47,8 +47,6 @@ class ReputationEvents {
 				neededLvl: newLevel
 			}
 		});
-
-		console.log(`Found ${levelRoles.length} roles for level ${newLevel}`);
 
 		if (levelRoles.length > 0) {
 			const server = await client.guilds.fetch(userLevel.serverId);

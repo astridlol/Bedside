@@ -4,9 +4,9 @@ import { prisma } from '..';
 import { RequireGuildMember } from '../guards/RequireGuildMember';
 
 @Discord()
-class Reputation {
+class Level {
 	@Guard(RequireGuildMember)
-	@Slash({ description: 'View your prison reputation' })
+	@Slash({ description: 'View your level' })
 	async rank(
 		@SlashOption({
 			description: 'The member',
