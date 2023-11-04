@@ -5,6 +5,7 @@ import { Client } from 'discordx';
 import NodeCache from 'node-cache';
 import { CommandInteraction, EmbedBuilder, IntentsBitField } from 'discord.js';
 import { PrismaClient } from '@prisma/client';
+import { env } from './env/server';
 
 require('dotenv').config();
 
@@ -52,7 +53,7 @@ async function start() {
 	await importx(__dirname + '/commands/*.{js,ts}');
 	await importx(__dirname + '/commands/*/*.{js,ts}');
 	await importx(__dirname + '/events/*.{js,ts}');
-	await client.login(process.env.TOKEN!!);
+	await client.login(env.TOKEN);
 }
 
 start()
